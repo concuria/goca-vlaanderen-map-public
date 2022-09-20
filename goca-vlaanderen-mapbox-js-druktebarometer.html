@@ -1,4 +1,22 @@
-<!-- Layout -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>GOCA Vlandeeren Map</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <link href="https://assets-global.website-files.com/6048cfea42b2855a063bbced/css/goca-lp.62adee74f.min.css" rel="stylesheet" />
+    <style type="text/css">
+        body { margin: 0; padding: 0; }
+        #goca-map { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
+        .mapboxgl-popup{
+          max-width:260px !important;
+        }
+    </style>    
+  </head>
+  <body>
+    <!-- Layout -->
     <div id="goca-map"></div>
     
     <!-- Templates -->
@@ -736,3 +754,5 @@
 
 
     </script>
+  </body>
+</html>
