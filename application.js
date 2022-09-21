@@ -1,7 +1,6 @@
-
-      const mapModule = (()=>{      
+const mapModule = (()=>{      
         let _config = {
-          mapbox_keys: {
+          mapbox_keys: {            
             all: {pk: 'pk.eyJ1IjoiY29uY3VyaWEiLCJhIjoiY2ttMmljdTB3MDlqNDJybnI0NmwzY29qNiJ9.vs1MjerbcI6oC7jNFmPcEQ', dataset: 'cl846sjkg0o0r28pk5f2b9jul', user: 'concuria', style: 'mapbox://styles/concuria/cl80cw1mo000a15pkcna3303l'},
             sbat: {
               pk: 'pk.eyJ1IjoiY29uY3VyaWEtYnYiLCJhIjoiY2w4NDc3bW1oMDA2OTNwcDVnYWQ5MHY2dSJ9.9jXhkxKbQ0nTHkvIAzsbHw', 
@@ -124,8 +123,14 @@
             return data.json()
           })        
           return Promise.all([datasetPromise, _getAirtableData()]).then((data)=>{
-            let holidayListData = data[1][4].records.slice(0)
-            console.log(holidayListData)
+            let holidayListData = null
+            if(data[1].length == 2){
+              holidayListData = data[1][1].records.slice(0)
+            }
+            else if(data[1].length == 5) {
+              holidayListData = data[1][4].records.slice(0)
+            }
+            
             holidayListData.forEach((holiday, index)=>{              
               _config.holidays[holiday.fields['Date']] = holiday.fields['Name']
             })
@@ -252,9 +257,9 @@
               'text-offset': [0,-2],
               'icon-image': ["case",
                 ["==", ["get", "holiday"], ["to-boolean", true]], "no-status",
-                ["==", ["to-number", ["get", "busyness"]], 0], "no-status",
-                ["!", ["get", "up_to_date"]], "not-current",
+                ["==", ["to-number", ["get", "busyness"]], 0], "appointment-only",
                 ["!", ["get", "open_now"]], "no-status",
+                ["!", ["get", "up_to_date"]], "not-current",                
                 ["==", ["to-number", ["get", "busyness"]], 1], "busy-1",
                 ["==", ["to-number", ["get", "busyness"]], 2], "busy-2",
                 ["==", ["to-number", ["get", "busyness"]], 3], "busy-3",
@@ -290,7 +295,6 @@
          */ 
 
         function _fitMapToGeojson(geojson) {
-          console.log(geojson)
           let bounds = new mapboxgl.LngLatBounds()
           geojson.features.forEach((feature)=>{
             bounds.extend(feature.geometry.coordinates)
@@ -619,4 +623,3 @@
         zoom: 7,
         container: 'goca-map'
       })
-
