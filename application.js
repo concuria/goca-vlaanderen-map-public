@@ -257,7 +257,7 @@ const mapModule = (()=>{
               'text-offset': [0,-2],
               'icon-image': ["case",
                 ["==", ["get", "holiday"], ["to-boolean", true]], "no-status",
-                ["==", ["to-number", ["get", "busyness"]], 0], "appointment-only",
+                ["==", ["to-number", ["get", "busyness"]], 0], ["case", ["!", ["get", "open_now"]], "no-status", "appointment-only"],
                 ["!", ["get", "open_now"]], "no-status",
                 ["!", ["get", "up_to_date"]], "not-current",                
                 ["==", ["to-number", ["get", "busyness"]], 1], "busy-1",
