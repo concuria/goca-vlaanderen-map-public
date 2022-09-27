@@ -35,7 +35,7 @@ const mapModule = (()=>{
           selected_dataset_id: null,
           selected_token: null,
           selected_user: null,
-          update_treshold_seconds: 14400
+          update_treshold_seconds: 36000
         }
         let _assets = {}
         let _domAssets = {}
