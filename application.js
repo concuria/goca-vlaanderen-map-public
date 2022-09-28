@@ -10,7 +10,7 @@ const mapModule = (()=>{
             },
             aibv: {pk: 'pk.eyJ1IjoiY29uY3VyaWEiLCJhIjoiY2ttMmljdTB3MDlqNDJybnI0NmwzY29qNiJ9.vs1MjerbcI6oC7jNFmPcEQ', dataset: 'cl846sjkg0o0r28pk5f2b9jul', user: 'concuria', style: 'mapbox://styles/concuria/cl80cw1mo000a15pkcna3303l'},
             km: {pk: 'pk.eyJ1IjoiY29uY3VyaWEiLCJhIjoiY2ttMmljdTB3MDlqNDJybnI0NmwzY29qNiJ9.vs1MjerbcI6oC7jNFmPcEQ', dataset: 'cl846sjkg0o0r28pk5f2b9jul', user: 'concuria', style: 'mapbox://styles/concuria/cl80cw1mo000a15pkcna3303l'},
-            autoveiligheid: {pk: 'pk.eyJ1IjoiY29uY3VyaWEiLCJhIjoiY2ttMmljdTB3MDlqNDJybnI0NmwzY29qNiJ9.vs1MjerbcI6oC7jNFmPcEQ', dataset: 'cl846sjkg0o0r28pk5f2b9jul', user: 'concuria', style: 'mapbox://styles/concuria/cl80cw1mo000a15pkcna3303l'}
+            autoveiligheid: {pk: 'pk.eyJ1IjoiY29uY3VyaWEtYnYiLCJhIjoiY2w4NDc3bW1oMDA2OTNwcDVnYWQ5MHY2dSJ9.9jXhkxKbQ0nTHkvIAzsbHw', dataset: 'cl8486g6008lu27lawf8y3jy7', user: 'concuria-bv', style: 'mapbox://styles/concuria-bv/cl84gtt4q00f914pm3qc6r2j2'}
           },
           popup_templates: {
             aibv: document.querySelector('#tpl-aibv-popup'),
