@@ -426,12 +426,13 @@ const mapModule = (()=>{
                     }
                   }
                 }
+                item.open_now = false
                 stations.push(item)
               })
             })
+            console.log(stations)
             return stations
         }
-
         /**
          * Summary.
          *
