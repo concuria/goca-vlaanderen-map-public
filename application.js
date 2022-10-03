@@ -35,8 +35,12 @@ const mapModule = (()=>{
           selected_dataset_id: null,
           selected_token: null,
           selected_user: null,
-          update_treshold_seconds: 36000
+          update_treshold_seconds: 36000,
+          current_date: ''  // Use 2022-10-02T09:09:10Z between the single quotes to test for a weekend, otherwise LEAVE this variable EMPTY
         }
+
+        _config.current_date_to_use = (_config.current_date.length > 0) ? new Date(_config.current_date) : new Date()
+
         let _assets = {}
         let _domAssets = {}
 
@@ -241,7 +245,7 @@ const mapModule = (()=>{
           {
             alert('No data is available for display.')
             return
-          }
+          }          
 
           _assets.map.addLayer({
             id: 'stations-lyr',
@@ -259,13 +263,11 @@ const mapModule = (()=>{
                 ["==", ["get", "holiday"], ["to-boolean", true]], "no-status",
                 ["==", ["to-number", ["get", "busyness"]], 0], ["case", ["!", ["get", "open_now"]], "no-status", "appointment-only"],
                 ["!", ["get", "open_now"]], "no-status",
-                ["!", ["get", "up_to_date"]], "not-current",                
+                ["!", ["get", "up_to_date"]], "not-current",
                 ["==", ["to-number", ["get", "busyness"]], 1], "busy-1",
                 ["==", ["to-number", ["get", "busyness"]], 2], "busy-2",
                 ["==", ["to-number", ["get", "busyness"]], 3], "busy-3",
-                ["==", ["to-number", ["get", "busyness"]], 4], "busy-4",                
-                
-                
+                ["==", ["to-number", ["get", "busyness"]], 4], "busy-4",
                 "no-status"
               ],
               'icon-size': 0.5,
@@ -298,7 +300,7 @@ const mapModule = (()=>{
           let bounds = new mapboxgl.LngLatBounds()
           geojson.features.forEach((feature)=>{
             bounds.extend(feature.geometry.coordinates)
-          })         
+          })       
           _assets.map.fitBounds(bounds, {padding: 50})
         }
 
@@ -393,7 +395,7 @@ const mapModule = (()=>{
             let stations = []
             incoming.forEach((source)=>{
               source.records.forEach((record)=>{
-                let now = Math.floor(new Date().getTime() / 1000)                
+                let now = Math.floor(_config.current_date_to_use.getTime() / 1000)                
 
                 let openingTimes = {
                   monday: _createTimeIntervals(now, record.fields['Monday open'], record.fields['Monday close'], record.fields['Start midday break'], record.fields['Stop midday break']),
@@ -417,8 +419,8 @@ const mapModule = (()=>{
                 }
 
                 for(let i in openingTimes){
-                  if(i != new Date().toLocaleDateString('en-EN', {weekday: 'long'}).toLowerCase()) {
-                      delete openingTimes[i]
+                  if(i != _config.current_date_to_use.toLocaleDateString('en-EN', {weekday: 'long'}).toLowerCase()) {
+                    delete openingTimes[i]
                   }
                   else{
                     for(j in openingTimes[i]) {
@@ -426,13 +428,24 @@ const mapModule = (()=>{
                     }
                   }
                 }
-                item.open_now = false
+
+                // Handle the possibility that the request date falls on a weekend
+                // In such cases, set the open_now property of each station to false
+                if(Object.keys(openingTimes).length == 0) {
+                  console.log('Today is a weekend day')
+                  item.open_now = false
+                }
+                else
+                {
+                  console.log('Today is a business day')
+                }
+                
                 stations.push(item)
               })
             })
-            console.log(stations)
             return stations
         }
+
         /**
          * Summary.
          *
@@ -539,7 +552,6 @@ const mapModule = (()=>{
         function _addEvents() {
           _assets.map.on('click', 'stations-lyr', function(e) {
             let clickedProps = e.features[0].properties
-            console.log(clickedProps)
             let popupContent = _config.popup_templates[e.features[0].properties.association].innerHTML
               .replace('{{google_maps_link}}', clickedProps.google_maps_link)
               .replace('{{info_link}}', clickedProps.info_link)
