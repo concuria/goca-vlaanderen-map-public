@@ -552,6 +552,7 @@ const mapModule = (()=>{
         function _addEvents() {
           _assets.map.on('click', 'stations-lyr', function(e) {
             let clickedProps = e.features[0].properties
+            console.log(clickedProps.start_human, clickedProps.end_human)
             let popupContent = _config.popup_templates[e.features[0].properties.association].innerHTML
               .replace('{{google_maps_link}}', clickedProps.google_maps_link)
               .replace('{{info_link}}', clickedProps.info_link)
@@ -559,8 +560,15 @@ const mapModule = (()=>{
               .replace('{{name}}', clickedProps.name)
               .replace('{{address}}', clickedProps.address)
               .replace('{{last_update}}', _formatDate(new Date(clickedProps.last_updated)).slice(0, -3))
-              .replace('{{start_human}}', clickedProps.start_human)
-              .replace('{{end_human}}', clickedProps.end_human)
+
+            if(typeof clickedProps.start_human == 'undefined' && typeof clickedProps.end_human == 'undefined') {
+              popupContent = popupContent.replace('{{open}}', 'Vandaag gesloten')
+            }
+            else
+            {
+              popupContent = popupContent.replace('{{open}}', `Openingsuren ${clickedProps.start_human} - ${clickedProps.end_human}`)
+            }
+
             _assets.popup
               .setLngLat(e.features[0].geometry.coordinates)
               .setHTML(popupContent)
