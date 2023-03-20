@@ -252,12 +252,11 @@ const mapModule = (()=>{
             type: 'symbol',
             source: 'stations-src',         
             paint: {
-              'text-opacity': ["step", ["zoom"], 0, 9.5, 1],
               'text-halo-color': '#FFFFFF',
               'text-halo-width': 2
             },   
             layout: {
-              'text-field': ["get", "name"],              
+              'text-field': ["step", ["zoom"], '', 9.5, ['get', 'name']],              
               'text-offset': [0,-2],
               'icon-image': ["case",
                 ["==", ["get", "holiday"], ["to-boolean", true]], "no-status",
