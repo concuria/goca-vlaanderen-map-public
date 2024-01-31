@@ -10,7 +10,7 @@ const mapModule = (()=>{
             },
             aibv: {pk: 'pk.eyJ1IjoiY29uY3VyaWEiLCJhIjoiY2ttMmljdTB3MDlqNDJybnI0NmwzY29qNiJ9.vs1MjerbcI6oC7jNFmPcEQ', dataset: 'cl846sjkg0o0r28pk5f2b9jul', user: 'concuria', style: 'mapbox://styles/concuria/cl80cw1mo000a15pkcna3303l'},
             km: {pk: 'pk.eyJ1IjoiY29uY3VyaWEiLCJhIjoiY2ttMmljdTB3MDlqNDJybnI0NmwzY29qNiJ9.vs1MjerbcI6oC7jNFmPcEQ', dataset: 'cl846sjkg0o0r28pk5f2b9jul', user: 'concuria', style: 'mapbox://styles/concuria/cl80cw1mo000a15pkcna3303l'},
-            autoveiligheid: {pk: 'pk.eyJ1IjoiY29uY3VyaWEtYnYiLCJhIjoiY2w4NDc3bW1oMDA2OTNwcDVnYWQ5MHY2dSJ9.9jXhkxKbQ0nTHkvIAzsbHw', dataset: 'cl8486g6008lu27lawf8y3jy7', user: 'concuria-bv', style: 'mapbox://styles/concuria-bv/cl84gtt4q00f914pm3qc6r2j2'}
+            autoveiligheid: {pk: 'pk.eyJ1IjoiY29uY3VyaWEiLCJhIjoiY2ttMmljdTB3MDlqNDJybnI0NmwzY29qNiJ9.vs1MjerbcI6oC7jNFmPcEQ', dataset: 'cl846sjkg0o0r28pk5f2b9jul', user: 'concuria', style: 'mapbox://styles/concuria/cl80cw1mo000a15pkcna3303l'}
           },
           popup_templates: {
             aibv: document.querySelector('#tpl-aibv-popup'),
@@ -21,22 +21,22 @@ const mapModule = (()=>{
           associations: ['sbat', 'aibv', 'km', 'autoveiligheid'],
           holidays: {},
           airtables: {
-            SBAT: 'appYDN0aUSA61rzMi/tblyIhsNuDrVlDPnL',
-            AIBV: 'apphJQRHotvSdaL9H/tblROkjkYemHxm1Ka',
-            KM: 'appD5jyiWwolhsdFP/tbldaN0VwhfaBEtgi',
-            AUTOVEILIGHEID: 'appWotVCqBrThRNj7/tblwtXnf0miIB33UA',
-            holidays: 'appKSKHfNUmwBARVh/tbleFXzNr9aqMpWUm'
+            "SBAT": "appYDN0aUSA61rzMi/tblyIhsNuDrVlDPnL",
+            "AIBV": "apphJQRHotvSdaL9H/tblROkjkYemHxm1Ka",
+            "KM": "appD5jyiWwolhsdFP/tbldaN0VwhfaBEtgi",
+            "AUTOVEILIGHEID": "appWotVCqBrThRNj7/tblwtXnf0miIB33UA",
+            "holidays": "appKSKHfNUmwBARVh/tbleFXzNr9aqMpWUm"
           },
-          airtable_readonly_apikey: 'keyAeKhTcgTZaIPY2',
-          apiRequestTemplate: `https://api.airtable.com/v0/{{tableInfo}}?api_key={{api_key}}`,
-          mapboxDatasetRequestTemplate: `https://api.mapbox.com/datasets/v1/{{user_name}}/{{dataset_name}}/features?access_token={{token}}`,
-          status: 'default',
-          selected_association: null,
-          selected_dataset_id: null,
-          selected_token: null,
-          selected_user: null,
-          update_treshold_seconds: 36000,
-          current_date: ''  // Use 2022-10-02T09:09:10Z between the single quotes to test for a weekend, otherwise LEAVE this variable EMPTY
+          "airtable_readonly_pat": "patUNeI4au0zuo7DP.9b7a755bd74e188cea2376c2704a06306900489a503189d8b8ee11ba9cbd8e1d",
+          "apiRequestTemplate": `https://api.airtable.com/v0/{{tableInfo}}`,
+          "mapboxDatasetRequestTemplate": `https://api.mapbox.com/datasets/v1/{{user_name}}/{{dataset_name}}/features?access_token={{token}}`,
+          "status": "default",
+          "selected_association": null,
+          "selected_dataset_id": null,
+          "selected_token": null,
+          "selected_user": null,
+          "update_treshold_seconds": 5400,
+          "current_date": ""  // Use 2022-10-02T09:09:10Z between the single quotes to test for a weekend, otherwise LEAVE this variable EMPTY
         }
 
         _config.current_date_to_use = (_config.current_date.length > 0) ? new Date(_config.current_date) : new Date()
@@ -256,7 +256,7 @@ const mapModule = (()=>{
               'text-halo-width': 2
             },   
             layout: {
-              'text-field': ["step", ["zoom"], '', 9.5, ['get', 'name']],              
+              'text-field': ["step", ["zoom"], '', 9.5, ['get', 'name']],             
               'text-offset': [0,-2],
               'icon-image': ["case",
                 ["==", ["get", "holiday"], ["to-boolean", true]], "no-status",
@@ -322,17 +322,50 @@ const mapModule = (()=>{
             let promises = []
             if(typeof association == 'undefined' || association == 'all') {
               for(let i in _config.airtables) {
-                promises.push(fetch(_config.apiRequestTemplate.replace('{{tableInfo}}', _config.airtables[i]).replace('{{api_key}}', _config.airtable_readonly_apikey)))
+
+                promises.push(
+                  fetch(
+                    _config.apiRequestTemplate
+                      .replace('{{tableInfo}}', _config.airtables[i])
+                      .replace('{{api_key}}', _config.airtable_readonly_apikey),
+                      {
+                        "headers": {"Authorization": `Bearer ${_config.airtable_readonly_pat}`}
+                      }
+                  )
+                )
+
               }
             }
             else
             {
               for(let i in _config.airtables) {
                 if(i.toLowerCase() == _config.selected_association) {
-                  promises.push(fetch(_config.apiRequestTemplate.replace('{{tableInfo}}', _config.airtables[i]).replace('{{api_key}}', _config.airtable_readonly_apikey)))
+
+                  promises.push(
+                    fetch(
+                      _config.apiRequestTemplate
+                        .replace('{{tableInfo}}', _config.airtables[i])
+                        .replace('{{api_key}}', _config.airtable_readonly_apikey),
+                        {
+                          "headers": {"Authorization": `Bearer ${_config.airtable_readonly_pat}`}
+                        }
+                    )
+                  )
+
                 }
               }
-              promises.push(fetch(_config.apiRequestTemplate.replace('{{tableInfo}}', _config.airtables['holidays']).replace('{{api_key}}', _config.airtable_readonly_apikey)))             
+              promises.push(
+
+                fetch(
+                  _config.apiRequestTemplate
+                    .replace('{{tableInfo}}', _config.airtables['holidays'])
+                    .replace('{{api_key}}', _config.airtable_readonly_apikey),
+                    {
+                      "headers": {"Authorization": `Bearer ${_config.airtable_readonly_pat}`}
+                    }
+                )
+
+              )
             }
             return promises
         }
