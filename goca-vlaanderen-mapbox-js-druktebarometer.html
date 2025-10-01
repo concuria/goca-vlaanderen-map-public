@@ -25,7 +25,7 @@
         <img src="https://uploads-ssl.webflow.com/604a00a4df74a7000318621d/607dde445453ca55289df2e4_aibv.svg" class="location-logo" style="max-width: 200px;" />
         <div class="body-text m bold s-m-b-4">{{name}}</div>
         <div class="s-m-b-8">{{address}}</div>
-        <div class="s-m-b-8">Openingsuren {{start_human}} - {{end_human}}</div>
+        <div class="s-m-b-8">{{open}}</div>
         <div class="s-m-b-8">Laatst gewijzigd {{last_update}}</div>
         <a href="{{info_link}}" target="_blank" class="link-icon s-m-r-12 w-inline-block" style="margin-bottom: 10px;display:block;">
           <div class="text-icon-wrapper">
@@ -52,7 +52,7 @@
         <img src="https://uploads-ssl.webflow.com/604a00a4df74a7000318621d/607de06a0f3a0130251b8f59_sbat.svg" class="location-logo" style="max-width: 200px;" />
         <div class="body-text m bold s-m-b-4">{{name}}</div>
         <div class="s-m-b-8">{{address}}</div>
-        <div class="s-m-b-8">Openingsuren {{start_human}} - {{end_human}}</div>
+        <div class="s-m-b-8">{{open}}</div>
         <div class="s-m-b-8">Laatst gewijzigd {{last_update}}</div>
         <a href="{{info_link}}" target="_blank" class="link-icon s-m-r-12 w-inline-block" style="margin-bottom: 10px;display:block;">
           <div class="text-icon-wrapper">
@@ -79,7 +79,7 @@
         <img src="https://uploads-ssl.webflow.com/604a00a4df74a7000318621d/607de11d26d8bc2848cd25bf_km.svg" class="location-logo" style="max-width: 200px;" />
         <div class="body-text m bold s-m-b-4">{{name}}</div>
         <div class="s-m-b-8">{{address}}</div>
-        <div class="s-m-b-8">Openingsuren {{start_human}} - {{end_human}}</div>
+        <div class="s-m-b-8">{{open}}</div>
         <div class="s-m-b-8">Laatst gewijzigd {{last_update}}</div>
         <a href="{{info_link}}" target="_blank" class="link-icon s-m-r-12 w-inline-block" style="margin-bottom: 10px;display:block;">
           <div class="text-icon-wrapper">
@@ -106,7 +106,7 @@
         <img src="https://uploads-ssl.webflow.com/604a00a4df74a7000318621d/607ddf131401312e1d655fdb_ga.svg" class="location-logo" style="max-width: 200px;" />
         <div class="body-text m bold s-m-b-4">{{name}}</div>
         <div class="s-m-b-8">{{address}}</div>
-        <div class="s-m-b-8">Openingsuren {{start_human}} - {{end_human}}</div>
+        <div class="s-m-b-8">{{open}}</div>
         <div class="s-m-b-8">Laatst gewijzigd {{last_update}}</div>
         <a href="{{info_link}}" target="_blank" class="link-icon s-m-r-12 w-inline-block" style="margin-bottom: 10px;display:block;">
           <div class="text-icon-wrapper">
@@ -133,7 +133,7 @@
     <script>
       const mapModule = (()=>{      
         let _config = {
-          mapbox_keys: {
+          mapbox_keys: {            
             all: {pk: 'pk.eyJ1IjoiY29uY3VyaWEiLCJhIjoiY2ttMmljdTB3MDlqNDJybnI0NmwzY29qNiJ9.vs1MjerbcI6oC7jNFmPcEQ', dataset: 'cl846sjkg0o0r28pk5f2b9jul', user: 'concuria', style: 'mapbox://styles/concuria/cl80cw1mo000a15pkcna3303l'},
             sbat: {
               pk: 'pk.eyJ1IjoiY29uY3VyaWEtYnYiLCJhIjoiY2w4NDc3bW1oMDA2OTNwcDVnYWQ5MHY2dSJ9.9jXhkxKbQ0nTHkvIAzsbHw', 
@@ -154,22 +154,26 @@
           associations: ['sbat', 'aibv', 'km', 'autoveiligheid'],
           holidays: {},
           airtables: {
-            SBAT: 'appYDN0aUSA61rzMi/tblyIhsNuDrVlDPnL',
-            AIBV: 'apphJQRHotvSdaL9H/tblROkjkYemHxm1Ka',
-            KM: 'appD5jyiWwolhsdFP/tbldaN0VwhfaBEtgi',
-            AUTOVEILIGHEID: 'appWotVCqBrThRNj7/tblwtXnf0miIB33UA',
-            holidays: 'appKSKHfNUmwBARVh/tbleFXzNr9aqMpWUm'
+            "SBAT": "appYDN0aUSA61rzMi/tblyIhsNuDrVlDPnL",
+            "AIBV": "apphJQRHotvSdaL9H/tblROkjkYemHxm1Ka",
+            "KM": "appD5jyiWwolhsdFP/tbldaN0VwhfaBEtgi",
+            "AUTOVEILIGHEID": "appWotVCqBrThRNj7/tblwtXnf0miIB33UA",
+            "holidays": "appKSKHfNUmwBARVh/tbleFXzNr9aqMpWUm"
           },
-          airtable_readonly_apikey: 'keyAeKhTcgTZaIPY2',
-          apiRequestTemplate: `https://api.airtable.com/v0/{{tableInfo}}?api_key={{api_key}}`,
-          mapboxDatasetRequestTemplate: `https://api.mapbox.com/datasets/v1/{{user_name}}/{{dataset_name}}/features?access_token={{token}}`,
-          status: 'default',
-          selected_association: null,
-          selected_dataset_id: null,
-          selected_token: null,
-          selected_user: null,
-          update_treshold_seconds: 5400
+          "airtable_readonly_pat": "patUNeI4au0zuo7DP.9b7a755bd74e188cea2376c2704a06306900489a503189d8b8ee11ba9cbd8e1d",
+          "apiRequestTemplate": `https://api.airtable.com/v0/{{tableInfo}}`,
+          "mapboxDatasetRequestTemplate": `https://api.mapbox.com/datasets/v1/{{user_name}}/{{dataset_name}}/features?access_token={{token}}`,
+          "status": "default",
+          "selected_association": null,
+          "selected_dataset_id": null,
+          "selected_token": null,
+          "selected_user": null,
+          "update_treshold_seconds": 5400,
+          "current_date": ""  // Use 2022-10-02T09:09:10Z between the single quotes to test for a weekend, otherwise LEAVE this variable EMPTY
         }
+
+        _config.current_date_to_use = (_config.current_date.length > 0) ? new Date(_config.current_date) : new Date()
+
         let _assets = {}
         let _domAssets = {}
 
@@ -256,8 +260,14 @@
             return data.json()
           })        
           return Promise.all([datasetPromise, _getAirtableData()]).then((data)=>{
-            let holidayListData = data[1][4].records.slice(0)
-            console.log(holidayListData)
+            let holidayListData = null
+            if(data[1].length == 2){
+              holidayListData = data[1][1].records.slice(0)
+            }
+            else if(data[1].length == 5) {
+              holidayListData = data[1][4].records.slice(0)
+            }
+            
             holidayListData.forEach((holiday, index)=>{              
               _config.holidays[holiday.fields['Date']] = holiday.fields['Name']
             })
@@ -361,6 +371,15 @@
         function _onLoadHandler(geojson = undefined) {
           _config.status = 'loaded'
 
+          console.log(geojson.features);
+          /*console.log(geojson.features.filter(item => item.properties.busyness == ''));
+
+          geojson.features = geojson.features.map((item) => {
+            item.properties.busyness = 5
+            return item;
+          })
+          console.log(geojson.features)*/
+
           if( typeof geojson != 'undefined' ) {
             _assets.map.addSource('stations-src', {type: 'geojson', data: geojson})
           }
@@ -368,30 +387,29 @@
           {
             alert('No data is available for display.')
             return
-          }
+          }          
 
           _assets.map.addLayer({
             id: 'stations-lyr',
             type: 'symbol',
             source: 'stations-src',         
             paint: {
-              'text-opacity': ["step", ["zoom"], 0, 9.5, 1],
               'text-halo-color': '#FFFFFF',
               'text-halo-width': 2
             },   
             layout: {
-              'text-field': ["get", "name"],              
+              'text-field': ["step", ["zoom"], '', 9.5, ['get', 'name']],             
               'text-offset': [0,-2],
               'icon-image': ["case",
+                ["==", ["to-number", ["get", "busyness"]], 999], "appointment-only",
                 ["==", ["get", "holiday"], ["to-boolean", true]], "no-status",
-                ["==", ["to-number", ["get", "busyness"]], 0], "no-status",
-                ["!", ["get", "up_to_date"]], "not-current",
                 ["!", ["get", "open_now"]], "no-status",
+                ["!", ["get", "up_to_date"]], "not-current",
                 ["==", ["to-number", ["get", "busyness"]], 1], "busy-1",
                 ["==", ["to-number", ["get", "busyness"]], 2], "busy-2",
                 ["==", ["to-number", ["get", "busyness"]], 3], "busy-3",
-                ["==", ["to-number", ["get", "busyness"]], 4], "busy-4",                
-                
+                ["==", ["to-number", ["get", "busyness"]], 4], "busy-4",
+                ["==", ["to-number", ["get", "busyness"]], 5], "appointment-only",
                 
                 "no-status"
               ],
@@ -422,11 +440,10 @@
          */ 
 
         function _fitMapToGeojson(geojson) {
-          console.log(geojson)
           let bounds = new mapboxgl.LngLatBounds()
           geojson.features.forEach((feature)=>{
             bounds.extend(feature.geometry.coordinates)
-          })         
+          })       
           _assets.map.fitBounds(bounds, {padding: 50})
         }
 
@@ -449,17 +466,50 @@
             let promises = []
             if(typeof association == 'undefined' || association == 'all') {
               for(let i in _config.airtables) {
-                promises.push(fetch(_config.apiRequestTemplate.replace('{{tableInfo}}', _config.airtables[i]).replace('{{api_key}}', _config.airtable_readonly_apikey)))
+
+                promises.push(
+                  fetch(
+                    _config.apiRequestTemplate
+                      .replace('{{tableInfo}}', _config.airtables[i])
+                      .replace('{{api_key}}', _config.airtable_readonly_apikey),
+                      {
+                        "headers": {"Authorization": `Bearer ${_config.airtable_readonly_pat}`}
+                      }
+                  )
+                )
+
               }
             }
             else
             {
               for(let i in _config.airtables) {
                 if(i.toLowerCase() == _config.selected_association) {
-                  promises.push(fetch(_config.apiRequestTemplate.replace('{{tableInfo}}', _config.airtables[i]).replace('{{api_key}}', _config.airtable_readonly_apikey)))
+
+                  promises.push(
+                    fetch(
+                      _config.apiRequestTemplate
+                        .replace('{{tableInfo}}', _config.airtables[i])
+                        .replace('{{api_key}}', _config.airtable_readonly_apikey),
+                        {
+                          "headers": {"Authorization": `Bearer ${_config.airtable_readonly_pat}`}
+                        }
+                    )
+                  )
+
                 }
               }
-              promises.push(fetch(_config.apiRequestTemplate.replace('{{tableInfo}}', _config.airtables['holidays']).replace('{{api_key}}', _config.airtable_readonly_apikey)))             
+              promises.push(
+
+                fetch(
+                  _config.apiRequestTemplate
+                    .replace('{{tableInfo}}', _config.airtables['holidays'])
+                    .replace('{{api_key}}', _config.airtable_readonly_apikey),
+                    {
+                      "headers": {"Authorization": `Bearer ${_config.airtable_readonly_pat}`}
+                    }
+                )
+
+              )
             }
             return promises
         }
@@ -521,7 +571,7 @@
             let stations = []
             incoming.forEach((source)=>{
               source.records.forEach((record)=>{
-                let now = Math.floor(new Date().getTime() / 1000)                
+                let now = Math.floor(_config.current_date_to_use.getTime() / 1000)                
 
                 let openingTimes = {
                   monday: _createTimeIntervals(now, record.fields['Monday open'], record.fields['Monday close'], record.fields['Start midday break'], record.fields['Stop midday break']),
@@ -534,7 +584,7 @@
                     id: record.id,
                     association: record.association,
                     name: record.fields.Name,                    
-                    busyness: (typeof record.fields.Busyness != 'undefined') ? parseInt(record.fields.Busyness) : 0,
+                    busyness: (typeof record.fields.Busyness != 'undefined') ? parseInt(record.fields.Busyness) : 999,
                     stationID: parseInt(record.fields.Station),
                     last_updated: record.fields['Last update'],
                     up_to_date: ((now - _config.update_treshold_seconds) > Math.floor(new Date(record.fields['Last update']).getTime() / 1000)) ? false : true,
@@ -545,8 +595,8 @@
                 }
 
                 for(let i in openingTimes){
-                  if(i != new Date().toLocaleDateString('en-EN', {weekday: 'long'}).toLowerCase()) {
-                      delete openingTimes[i]
+                  if(i != _config.current_date_to_use.toLocaleDateString('en-EN', {weekday: 'long'}).toLowerCase()) {
+                    delete openingTimes[i]
                   }
                   else{
                     for(j in openingTimes[i]) {
@@ -554,6 +604,18 @@
                     }
                   }
                 }
+
+                // Handle the possibility that the request date falls on a weekend
+                // In such cases, set the open_now property of each station to false
+                if(Object.keys(openingTimes).length == 0) {
+                  console.log('Today is a weekend day')
+                  item.open_now = false
+                }
+                else
+                {
+                  console.log('Today is a business day')
+                }
+                
                 stations.push(item)
               })
             })
@@ -666,7 +728,7 @@
         function _addEvents() {
           _assets.map.on('click', 'stations-lyr', function(e) {
             let clickedProps = e.features[0].properties
-            console.log(clickedProps)
+            console.log(clickedProps.start_human, clickedProps.end_human)
             let popupContent = _config.popup_templates[e.features[0].properties.association].innerHTML
               .replace('{{google_maps_link}}', clickedProps.google_maps_link)
               .replace('{{info_link}}', clickedProps.info_link)
@@ -674,8 +736,15 @@
               .replace('{{name}}', clickedProps.name)
               .replace('{{address}}', clickedProps.address)
               .replace('{{last_update}}', _formatDate(new Date(clickedProps.last_updated)).slice(0, -3))
-              .replace('{{start_human}}', clickedProps.start_human)
-              .replace('{{end_human}}', clickedProps.end_human)
+
+            if(typeof clickedProps.start_human == 'undefined' && typeof clickedProps.end_human == 'undefined') {
+              popupContent = popupContent.replace('{{open}}', 'Vandaag gesloten')
+            }
+            else
+            {
+              popupContent = popupContent.replace('{{open}}', `Openingsuren ${clickedProps.start_human} - ${clickedProps.end_human}`)
+            }
+
             _assets.popup
               .setLngLat(e.features[0].geometry.coordinates)
               .setHTML(popupContent)
