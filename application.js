@@ -238,6 +238,15 @@ const mapModule = (()=>{
         function _onLoadHandler(geojson = undefined) {
           _config.status = 'loaded'
 
+          console.log(geojson.features);
+          /*console.log(geojson.features.filter(item => item.properties.busyness == ''));
+
+          geojson.features = geojson.features.map((item) => {
+            item.properties.busyness = 5
+            return item;
+          })
+          console.log(geojson.features)*/
+
           if( typeof geojson != 'undefined' ) {
             _assets.map.addSource('stations-src', {type: 'geojson', data: geojson})
           }
@@ -259,14 +268,16 @@ const mapModule = (()=>{
               'text-field': ["step", ["zoom"], '', 9.5, ['get', 'name']],             
               'text-offset': [0,-2],
               'icon-image': ["case",
+                ["==", ["to-number", ["get", "busyness"]], 999], "appointment-only",
                 ["==", ["get", "holiday"], ["to-boolean", true]], "no-status",
-                ["==", ["to-number", ["get", "busyness"]], 0], ["case", ["!", ["get", "open_now"]], "no-status", "appointment-only"],
                 ["!", ["get", "open_now"]], "no-status",
                 ["!", ["get", "up_to_date"]], "not-current",
                 ["==", ["to-number", ["get", "busyness"]], 1], "busy-1",
                 ["==", ["to-number", ["get", "busyness"]], 2], "busy-2",
                 ["==", ["to-number", ["get", "busyness"]], 3], "busy-3",
                 ["==", ["to-number", ["get", "busyness"]], 4], "busy-4",
+                ["==", ["to-number", ["get", "busyness"]], 5], "appointment-only",
+                
                 "no-status"
               ],
               'icon-size': 0.5,
@@ -440,7 +451,7 @@ const mapModule = (()=>{
                     id: record.id,
                     association: record.association,
                     name: record.fields.Name,                    
-                    busyness: (typeof record.fields.Busyness != 'undefined') ? parseInt(record.fields.Busyness) : 0,
+                    busyness: (typeof record.fields.Busyness != 'undefined') ? parseInt(record.fields.Busyness) : 999,
                     stationID: parseInt(record.fields.Station),
                     last_updated: record.fields['Last update'],
                     up_to_date: ((now - _config.update_treshold_seconds) > Math.floor(new Date(record.fields['Last update']).getTime() / 1000)) ? false : true,
